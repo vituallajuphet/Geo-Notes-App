@@ -7,3 +7,7 @@ export const validateEmail = (email: string): boolean => {
 export const validatePassword = (password: string): boolean => {
     return password.length >= 7;
   };
+
+export const validateName = (name: string): boolean => {
+    return name.length > 0;
+  };

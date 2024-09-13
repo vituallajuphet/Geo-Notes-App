@@ -6,30 +6,47 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import {useTailwind} from 'tailwind-rn';
 import Button from '../../components/Button';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {validateEmail, validatePassword} from '../../utils';
+import {validateEmail, validateName, validatePassword} from '../../utils';
 import _ from 'lodash';
 import { useKeyboard } from '../../hooks/useKeyboard';
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import { withLoading } from '../../HOC/withLoading';
+import { AppContext } from '../../providers/AppProvider';
 
 const SignUpScreen = props => {
   const tw = useTailwind();
   const nav = useNavigation();
 
-  const [email, setEmail] = React.useState('');
-  const [fullname, setFullname] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [email, setEmail] = React.useState('ybanezmichelle1114@gmail.com');
+  const [fullname, setFullname] = React.useState('inday pahak');
+  const [password, setPassword] = React.useState('pass1234');
   const [error, setError] = React.useState({
     email: '',
     password: '',
+    fullname: '',
   });
 
   const isKeyboardVisible = useKeyboard();
+  const { state, send } = useContext(AppContext);
+
+
+
+
+  const handleChangeName = (text: string) => {
+    setFullname(text);
+      if (!validateName(text)) {
+        setError({...error, fullname: 'Invalid Name'});
+      } else {
+        setError({...error, fullname: '' });
+    }
+  }
+
 
   const handleChangeEmail = (text: string) => {
     setEmail(text);
@@ -50,6 +67,7 @@ const SignUpScreen = props => {
   };
 
   const handleSubmit = () => {
+    send(prev => ({...prev, loading: true}));
     auth()
       .createUserWithEmailAndPassword(
         email,
@@ -64,12 +82,17 @@ const SignUpScreen = props => {
           age: 30,
         })
         .then(() => {
-          console.log('User added!');
+          setEmail('');
+          setPassword('');
+          setFullname('');
+          send(prev => ({...prev, loading: false}));
         });
       })
-      .catch(error => {
+      .catch(err => {
         
-        console.error(error);
+        send(prev => ({...prev, loading: false}));
+        console.log(err.message)
+        setError({...error, password: err.message?.replace(/\[.*?\]\s*/g, '')});
       });
   };
 
@@ -83,13 +106,13 @@ const SignUpScreen = props => {
     >
       <View style={tw('flex-1 ')}>
           {!isKeyboardVisible ? (
-            <View style={tw('flex-[2] items-center justify-center bg-slate-700')}>
+            <View style={tw('h-[25%] items-center justify-center bg-slate-700')}>
             <View style={[styles.gap4, tw('flex-row items-center')]}>
               <Icon name="map" size={50}  color='#54bdfa'/>
             </View>
           </View>
           ) : null}
-        <View style={tw('flex-[4] p-4 pt-12')}>
+        <View style={tw('flex-[1] p-4 pt-8')}>
           <Text
             style={tw('text-2xl text-slate-700 dark:text-slate-100 font-bold')}>
             Create Account
@@ -105,12 +128,12 @@ const SignUpScreen = props => {
                 style={tw('w-full border border-gray-300 rounded-md p-2')}
                 value={fullname}
                 onChangeText={text => {
-                  setFullname(text);
+                  handleChangeName(text);
                 }}
               />
-              {error.email && (
+              {error.fullname && (
                 <Text style={tw('text-red-400 text-xs mt-2')}>
-                  {error.email}
+                  {error.fullname}
                 </Text>
               )}
             </View>
@@ -182,4 +205,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUpScreen;
+export default withLoading(SignUpScreen);

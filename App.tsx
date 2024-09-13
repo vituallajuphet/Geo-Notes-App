@@ -5,18 +5,21 @@ import {AuthProvider} from './src/providers/AuthProvider';
 import {TailwindProvider} from 'tailwind-rn';
 import utilities from './tailwind.json';
 import RootNavigator from './src/navigator/RootNavigator';
-
-
-
+import { AppProvider } from './src/providers/AppProvider';
+import { MenuProvider } from 'react-native-popup-menu';
 const App: React.FC = () => {
   return (
-    <TailwindProvider utilities={utilities}>
-      <AuthProvider>
-        <NavigationContainer>
-            <RootNavigator />
-        </NavigationContainer>
-      </AuthProvider>
-    </TailwindProvider>
+    <MenuProvider>
+      <AppProvider>
+        <TailwindProvider utilities={utilities}>
+          <AuthProvider>
+            <NavigationContainer>
+                <RootNavigator />
+            </NavigationContainer>
+          </AuthProvider>
+        </TailwindProvider>
+      </AppProvider>
+    </MenuProvider>
   );
 };
 

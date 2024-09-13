@@ -11,7 +11,6 @@ const Stack = createNativeStackNavigator();
 const RootNavigator = () => {
   const authContext = useContext(AuthContext);
 
-
   const initScreens = () => {
     if (authContext?.user) {
       return       <>

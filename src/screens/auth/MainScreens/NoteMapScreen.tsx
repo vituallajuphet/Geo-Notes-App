@@ -28,6 +28,8 @@ const NoteMapScreen = () => {
             ...doc.data(), 
         }));
 
+        console.log("notes", notes)
+
         setNotelists(notes);
       } catch (e) {console.error("Error fetching notes: ", e);
           
@@ -41,6 +43,8 @@ const NoteMapScreen = () => {
 
   Geolocation.getCurrentPosition(info => {
     setLocation(info);
+  }, () => {
+    setLocation(null);
   });
 
   const getPins = useCallback(() => {
@@ -57,7 +61,7 @@ const NoteMapScreen = () => {
   return (
     <View style={tw('flex-1 bg-white dark:bg-slate-900')}>
         {
-          currentLocation  ? (
+          currentLocation ? (
             <MapLibreGL.MapView style={styles.map} logoEnabled={false} styleURL={styleUrl} onPress={(e)=> console.log(e)}
             >
               <Camera zoomLevel={10} centerCoordinate={
@@ -66,7 +70,13 @@ const NoteMapScreen = () => {
             {getPins()}
          
             </MapLibreGL.MapView>
-          ) : null
+          ) : (
+            <View style={tw('flex-1 items-center justify-center')}>
+              <Text style={tw('text-red-300 font-semibold text-base')}>
+                Enable location to view map
+              </Text>
+            </View>
+          )
         }
     </View>
   )

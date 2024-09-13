@@ -35,7 +35,7 @@ const getAllNotes = async () => {
   return (
       <FlatList 
           data={notelists}
-          contentContainerStyle={tw('p-4 flex-1')}
+          contentContainerStyle={tw('p-4 py-0 flex-1')}
           keyExtractor={(item) => item.id}
           ListEmptyComponent={() => {
             return (

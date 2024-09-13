@@ -50,6 +50,9 @@ const LoginScreen = props => {
   };
 
   const handleSubmit = () => {
+    if(!isValidated) {
+      return;
+    }
     auth()
       .signInWithEmailAndPassword(
         email,
@@ -60,9 +63,13 @@ const LoginScreen = props => {
       })
       .catch(error => {
         
-        console.error(error);
+        setError({...error, password: "Invalid Email or Password"});
       });
   };
+
+  const isValidated = () => { 
+    return !_.isEmpty(error.email) || !_.isEmpty(error.password);
+  }
 
   return (
     <KeyboardAvoidingView

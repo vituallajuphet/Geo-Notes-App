@@ -1,6 +1,6 @@
 // screens/MainScreen.tsx
 import React, { useContext } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Pressable } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AuthContext } from '../../../providers/AuthProvider';
 import {NoteListScreen, HomeScreen, LogoutScreen, NoteScreen, NoteMapScreen} from './';
@@ -8,6 +8,7 @@ import {NoteListScreen, HomeScreen, LogoutScreen, NoteScreen, NoteMapScreen} fro
 import auth from '@react-native-firebase/auth';
 import { useTailwind } from 'tailwind-rn';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import PopupMenu from '../../../components/PopupMenu';
 
 const Tab = createBottomTabNavigator();
 
@@ -16,7 +17,6 @@ const MainScreen: React.FC = ({ navigation }) => {
   const context = useContext(AuthContext);
   const handleLogout = async () => {
     await auth().signOut();
-    navigation.navigateL('Login');
   };
 
   const tw = useTailwind();
@@ -27,10 +27,13 @@ const MainScreen: React.FC = ({ navigation }) => {
         <View style={tw('flex-row w-full justify-between items-center')}>
           <View>
             <Text style={tw('text-2xl font-bold')}>Hello, </Text>
-            <Text style={tw('text-2xl font-bold')}>{context?.user?.meta.name}</Text>
+            <Text style={tw('text-2xl font-bold')}>{context?.user?.meta?.name}</Text>
           </View>
           <View>
+            {/* <Pressable onPress={handleLogout}>
             <Icon name="bars" size={25} />
+            </Pressable> */}
+            <PopupMenu  onLogout={handleLogout}/>
           </View>
         </View>
         <View style={tw('mt-8')}>
