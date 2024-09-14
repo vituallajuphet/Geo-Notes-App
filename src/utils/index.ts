@@ -11,3 +11,9 @@ export const validatePassword = (password: string): boolean => {
 export const validateName = (name: string): boolean => {
     return name.length > 0;
   };
+
+
+export const getFileExtension = (uri: string) => {
+  // Extract file extension from URI
+  return uri.split('.').pop();
+};

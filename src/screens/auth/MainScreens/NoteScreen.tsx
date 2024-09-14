@@ -1,5 +1,5 @@
-import { View, Text, TextInput } from 'react-native'
-import React, { useContext } from 'react'
+import { View, Text, TextInput, Platform } from 'react-native'
+import React, { useContext, useEffect } from 'react'
 import { useTailwind } from 'tailwind-rn';
 import Button from '../../../components/Button';
 import Geolocation from '@react-native-community/geolocation';
@@ -8,11 +8,13 @@ import { AuthContext } from '../../../providers/AuthProvider';
 import { AppContext } from '../../../providers/AppProvider';
 import { withLoading } from '../../../HOC/withLoading';
 import ImagePicker from '../../../components/ImagePicker';
-
-
+import storage from '@react-native-firebase/storage';
+import uuid from 'react-native-uuid';
+import { getFileExtension } from '../../../utils';
 
 const  NoteScreen =()  => {
   const [title, setTitle] = React.useState('');
+  const [selectedImage, setSelectedImage] = React.useState<any>(null);
   const [body, setBody] = React.useState('');
   const [location, setLocation] = React.useState({});
   const tw = useTailwind();
@@ -24,28 +26,52 @@ const  NoteScreen =()  => {
       setLocation(info);
   });
 
-  const handleSave = () => { 
-    send(prev => ({...prev, loading: true}));
-    try {
-      const uid = context?.user?.auth?.uid
-      const notesCollectionRef = firestore().collection(`Users/${uid}/notes`);
+useEffect(() => {
 
-      notesCollectionRef.add({
-        title,
-        body,
-        location,
-      }).then(() => {
-        send(prev => ({...prev, loading: false}));
-        setTitle('');
-        setBody('');
-      });
+  const getImages = async () => { 
+    const reference = storage().ref('/images/image.png');
 
-    } catch (error) {
-      console.error("Error saving note: ", error);
-      send(prev => ({...prev, loading: false}));
-    }
+    const url = await reference.getDownloadURL();
+    console.log("Image url: ", url);
   }
 
+  getImages();
+
+}, [])
+
+
+  const handleSave = async () => { 
+    if(selectedImage) {
+      const uploadUri = Platform.OS === 'ios' ? selectedImage.uri.replace('file://', '') : selectedImage.uri;
+      const ext = getFileExtension(uploadUri);
+      const uid = uuid.v4();
+      const fullPath = `images/${uid}.${ext}`;
+      const res = await storage().ref(fullPath).putFile(uploadUri);
+
+      send(prev => ({...prev, loading: true}));
+      try {
+        const uid = context?.user?.auth?.uid
+        const notesCollectionRef = firestore().collection(`Users/${uid}/notes`);
+
+        notesCollectionRef.add({
+          title,
+          body, 
+          location,
+          imagepath: fullPath
+        }).then(() => {
+          send(prev => ({...prev, loading: false}));
+          setTitle('');
+          setBody('');
+        });
+
+      } catch (error) {
+        console.error("Error saving note: ", error);
+        send(prev => ({...prev, loading: false}));
+      }
+    }    
+  }
+
+ 
   return (
     <View style={tw('bg-white dark:bg-slate-800 p-6 px-4 flex-1')}>
         <Text style={tw('text-2xl font-bold')}>Note</Text>
@@ -68,7 +94,9 @@ const  NoteScreen =()  => {
                     />
             </View>
             <View style={tw('mt-4 mb-4')}>
-                    <ImagePicker />
+                    <ImagePicker onImageSelected={(res) => {
+                      setSelectedImage(res.assets[0]);
+                    }}/>
             </View>
             <View style={tw('mt-4')}>
                 <Button title="Save Note" onPress={()=> {

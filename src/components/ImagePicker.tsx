@@ -3,7 +3,11 @@ import React from 'react'
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import { useTailwind } from 'tailwind-rn';
 
-const ImagePicker = () => {
+type ImagePickerProps = {
+    onImageSelected: (image: any) => void
+}
+
+const ImagePicker = ({onImageSelected}: ImagePickerProps) => {
     const tw = useTailwind();
   return (
     <View style={tw('bg-slate-600 justify-center items-center  p-4 rounded-md')}>
@@ -11,7 +15,10 @@ const ImagePicker = () => {
             style={tw(' items-center w-full justify-center border border-white rounded-md h-24')} 
             onPress={() => {
                 launchImageLibrary({ mediaType: 'photo', quality: 0.2, selectionLimit: 1 }, (response) => {
-                console.log(response)});
+                    if(response.assets) {
+                        onImageSelected(response)
+                    }
+                });
             }}
         >
             <Text style={tw('text-sm text-white')}>Upload Image</Text>
@@ -21,7 +28,10 @@ const ImagePicker = () => {
             style={tw(' items-center justify-center p-3 bg-blue-500 rounded-md self-center')} 
             onPress={() => {
                 launchCamera({ mediaType: 'photo' }, (response) => {
-                console.log(response)});
+                    if(response.assets) {
+                        onImageSelected(response)
+                    }
+                });
             }}
         >
             <Text style={tw('text-sm text-white ')}>Capture Camera</Text>
