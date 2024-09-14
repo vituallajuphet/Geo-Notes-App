@@ -8,6 +8,7 @@ import {
 } from 'react-native-popup-menu';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useTailwind } from 'tailwind-rn';
+
 type PopupMenuProps = {
   onLogout: () => void
 }

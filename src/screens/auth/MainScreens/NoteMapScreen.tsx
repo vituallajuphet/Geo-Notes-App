@@ -3,20 +3,18 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import MapLibreGL, { Camera, PointAnnotation } from '@maplibre/maplibre-react-native';
 import { useTailwind } from 'tailwind-rn';
 import Geolocation from '@react-native-community/geolocation';
-import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from '../../../providers/AuthProvider';
 import { useNavigation } from '@react-navigation/native';
 import { AppContext } from '../../../providers/AppProvider';
+import { MAPS_API_KEY } from '../../../utils';
 
 MapLibreGL.setAccessToken(null);
-const apiKey = 'e229690a-f2a0-4915-b43d-b79e90b62832';
-const styleUrl = `https://tiles.stadiamaps.com/styles/alidade_smooth.json?api_key=${apiKey}`;
+const styleUrl = `https://tiles.stadiamaps.com/styles/alidade_smooth.json?api_key=${MAPS_API_KEY}`;
 
 const NoteMapScreen = () => {
   const tw = useTailwind();
   const [currentLocation, setLocation] = React.useState<any>(null);
 
-  const context = useContext(AuthContext);
   const { state } = useContext(AppContext)
   const notelists = state?.notes;
   const nav = useNavigation();

@@ -1,7 +1,6 @@
 import { View, Text, FlatList, Pressable } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { useTailwind } from 'tailwind-rn';
-import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from '../providers/AuthProvider';
 import { useNavigation } from '@react-navigation/native';
 import { AppContext } from '../providers/AppProvider';

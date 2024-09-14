@@ -1,21 +1,24 @@
 // screens/MainScreen.tsx
 import React, { useContext } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AuthContext } from '../../../providers/AuthProvider';
-import { NoteListScreen, HomeScreen, LogoutScreen, NoteScreen, NoteMapScreen } from './';
+import { NoteListScreen, NoteMapScreen } from './';
 
 import auth from '@react-native-firebase/auth';
 import { useTailwind } from 'tailwind-rn';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PopupMenu from '../../../components/PopupMenu';
 import FabButton from '../../../components/FabButton';
+import { ellipsis } from '../../../utils';
+import { useNavigation } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
-const MainScreen: React.FC = ({ navigation }) => {
+const MainScreen: React.FC = ({ }) => {
 
   const context = useContext(AuthContext);
+  const nav = useNavigation()
   const handleLogout = async () => {
     await auth().signOut();
   };
@@ -37,7 +40,7 @@ const MainScreen: React.FC = ({ navigation }) => {
             </View>
             <View>
               <Text style={tw('text-2xl font-bold text-slate-600 dark:text-white')}>Hello, </Text>
-              <Text style={tw('text-2xl font-bold text-slate-600 dark:text-white')}>{context?.user?.meta?.name}</Text>
+              <Text style={tw('text-2xl font-bold text-slate-600 dark:text-white')}>{ellipsis(context?.user?.meta?.name, 15)}</Text>
             </View>
           </View>
           <View>
@@ -79,7 +82,7 @@ const MainScreen: React.FC = ({ navigation }) => {
       <View style={tw('absolute bottom-[4rem] right-2')}>
         <FabButton
           onPress={() => {
-            navigation.navigate('Note')
+            nav.navigate('Note')
           }}
         />
       </View>

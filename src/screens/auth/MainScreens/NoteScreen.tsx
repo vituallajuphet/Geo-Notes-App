@@ -12,7 +12,6 @@ import storage from '@react-native-firebase/storage';
 import uuid from 'react-native-uuid';
 import { getFileExtension } from '../../../utils';
 import Toast from 'react-native-toast-message';
-import { set } from 'lodash';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';

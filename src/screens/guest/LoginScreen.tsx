@@ -3,8 +3,6 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  Pressable,
-  Touchable,
   TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native';
@@ -18,7 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useKeyboard } from '../../hooks/useKeyboard';
 import auth from '@react-native-firebase/auth';
 
-const LoginScreen = props => {
+const LoginScreen = () => {
   const tw = useTailwind();
 
   const nav = useNavigation();
@@ -131,6 +129,7 @@ const LoginScreen = props => {
             </View>
             <View style={tw('mt-4')}>
               <Button
+                btnType='primary'
                 title="Login Account"
                 disabled={!_.isEmpty(error.email) || !_.isEmpty(error.password)}
                 onPress={() => {

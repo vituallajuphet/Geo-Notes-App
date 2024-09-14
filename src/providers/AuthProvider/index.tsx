@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }: any) => {
         setUser(prev => ({ ...prev, auth: user }));
       } else {
         setUser(null);
+        send(prev => ({ ...prev, notes: [] }));
       }
     });
 

@@ -1,4 +1,3 @@
-import { View, Text } from 'react-native';
 import React, { useContext } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LoginScreen, SignUpScreen } from '../screens/guest';
