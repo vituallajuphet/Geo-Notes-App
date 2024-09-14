@@ -12,7 +12,7 @@ import storage from '@react-native-firebase/storage';
 import uuid from 'react-native-uuid';
 import { getFileExtension } from '../../../utils';
 
-const NoteScreen = () => {
+const NoteScreen = (props: any) => {
   const [title, setTitle] = React.useState('');
   const [selectedImage, setSelectedImage] = React.useState<any>(null);
   const [body, setBody] = React.useState('');
@@ -20,28 +20,20 @@ const NoteScreen = () => {
   const tw = useTailwind();
   const context = useContext(AuthContext);
 
+  const params = props?.route?.params;
+
   const { send } = useContext(AppContext);
 
-  Geolocation.getCurrentPosition(info => {
-    setLocation(info);
-  });
-
   useEffect(() => {
-
-    const getImages = async () => {
-      const reference = storage().ref('/images/image.png');
-
-      const url = await reference.getDownloadURL();
-      console.log("Image url: ", url);
-    }
-
-    getImages();
-
+    Geolocation.getCurrentPosition(info => {
+      setLocation(info);
+    });
   }, [])
 
 
   const handleSave = async () => {
     if (selectedImage) {
+      send(prev => ({ ...prev, loading: true }));
       const uploadUri = Platform.OS === 'ios' ? selectedImage.uri.replace('file://', '') : selectedImage.uri;
       const ext = getFileExtension(uploadUri);
       const uid = uuid.v4();
@@ -74,8 +66,8 @@ const NoteScreen = () => {
 
   return (
     <View style={tw('bg-white dark:bg-slate-800 p-6 px-4 flex-1')}>
-      <Text style={tw('text-2xl font-bold')}>Note</Text>
-      <Text style={tw('text-sm text-gray-500 mt-2')}>Fill the form to add new note</Text>
+      <Text style={tw('text-2xl font-bold')}>Add New</Text>
+      <Text style={tw('text-sm text-gray-500 mt-2')}>Fill the form to add note</Text>
       <View style={tw('mt-8')}>
         <View>
           <Text style={tw('font-bold text-sm mb-1')}>Title</Text>

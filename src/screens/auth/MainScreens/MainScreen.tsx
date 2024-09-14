@@ -62,6 +62,7 @@ const MainScreen: React.FC = ({ navigation }) => {
               <Icon name="map" color={color} size={size} />
             ),
           }}
+
         />
       </Tab.Navigator>
       <View style={tw('absolute bottom-[4rem] right-2')}>

@@ -15,7 +15,9 @@ const RootNavigator = () => {
     if (authContext?.user) {
       return <>
         <Stack.Screen name="Main" component={MainScreen} />
-        <Stack.Screen name="Note" component={NoteScreen} />
+        <Stack.Screen name="Note" options={{
+          headerShown: true
+        }} component={NoteScreen} />
       </>
 
     } else {

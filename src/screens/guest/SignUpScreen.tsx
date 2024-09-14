@@ -7,10 +7,10 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import React, { useContext } from 'react';
-import {useTailwind} from 'tailwind-rn';
+import { useTailwind } from 'tailwind-rn';
 import Button from '../../components/Button';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {validateEmail, validateName, validatePassword} from '../../utils';
+import { validateEmail, validateName, validatePassword } from '../../utils';
 import _ from 'lodash';
 import { useKeyboard } from '../../hooks/useKeyboard';
 import { useNavigation } from '@react-navigation/native';
@@ -40,10 +40,10 @@ const SignUpScreen = props => {
 
   const handleChangeName = (text: string) => {
     setFullname(text);
-      if (!validateName(text)) {
-        setError({...error, fullname: 'Invalid Name'});
-      } else {
-        setError({...error, fullname: '' });
+    if (!validateName(text)) {
+      setError({ ...error, fullname: 'Invalid Name' });
+    } else {
+      setError({ ...error, fullname: '' });
     }
   }
 
@@ -51,23 +51,23 @@ const SignUpScreen = props => {
   const handleChangeEmail = (text: string) => {
     setEmail(text);
     if (!validateEmail(text)) {
-      setError({...error, email: 'Invalid Email Address'});
+      setError({ ...error, email: 'Invalid Email Address' });
     } else {
-      setError({...error, email: ''});
+      setError({ ...error, email: '' });
     }
   };
 
   const handleChangePassword = (text: string) => {
     setPassword(text);
     if (!validatePassword(text)) {
-      setError({...error, password: 'Invalid Password, At least 7 characters'});
+      setError({ ...error, password: 'Invalid Password, At least 7 characters' });
     } else {
-      setError({...error, password: ''});
+      setError({ ...error, password: '' });
     }
   };
 
   const handleSubmit = () => {
-    send(prev => ({...prev, loading: true}));
+    send(prev => ({ ...prev, loading: true }));
     auth()
       .createUserWithEmailAndPassword(
         email,
@@ -75,24 +75,23 @@ const SignUpScreen = props => {
       )
       .then((res) => {
         firestore()
-        .collection('Users')
-        .doc(res.user.uid)
-        .set({
-          name: fullname,
-          age: 30,
-        })
-        .then(() => {
-          setEmail('');
-          setPassword('');
-          setFullname('');
-          send(prev => ({...prev, loading: false}));
-        });
+          .collection('Users')
+          .doc(res.user.uid)
+          .set({
+            name: fullname,
+          })
+          .then(() => {
+            setEmail('');
+            setPassword('');
+            setFullname('');
+            send(prev => ({ ...prev, loading: false }));
+          });
       })
       .catch(err => {
-        
-        send(prev => ({...prev, loading: false}));
+
+        send(prev => ({ ...prev, loading: false }));
         console.log(err.message)
-        setError({...error, password: err.message?.replace(/\[.*?\]\s*/g, '')});
+        setError({ ...error, password: err.message?.replace(/\[.*?\]\s*/g, '') });
       });
   };
 
@@ -105,13 +104,13 @@ const SignUpScreen = props => {
       enabled={true}
     >
       <View style={tw('flex-1 ')}>
-          {!isKeyboardVisible ? (
-            <View style={tw('h-[25%] items-center justify-center bg-slate-700')}>
+        {!isKeyboardVisible ? (
+          <View style={tw('h-[25%] items-center justify-center bg-slate-700')}>
             <View style={[styles.gap4, tw('flex-row items-center')]}>
-              <Icon name="map" size={50}  color='#54bdfa'/>
+              <Icon name="map" size={50} color='#54bdfa' />
             </View>
           </View>
-          ) : null}
+        ) : null}
         <View style={tw('flex-[1] p-4 pt-8')}>
           <Text
             style={tw('text-2xl text-slate-700 dark:text-slate-100 font-bold')}>
@@ -180,9 +179,9 @@ const SignUpScreen = props => {
               />
 
               <TouchableOpacity
-              onPress={() => {
-                nav.navigate('Login');
-              }}
+                onPress={() => {
+                  nav.navigate('Login');
+                }}
                 style={tw(' self-center  items-center justify-center mt-6')}>
                 <Text
                   style={tw(
