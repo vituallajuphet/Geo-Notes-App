@@ -40,7 +40,7 @@ const MainScreen: React.FC = ({ }) => {
             </View>
             <View>
               <Text style={tw('text-2xl font-bold text-slate-600 dark:text-white')}>Hello, </Text>
-              <Text style={tw('text-2xl font-bold text-slate-600 dark:text-white')}>{ellipsis(context?.user?.meta?.name, 15)}</Text>
+              <Text style={tw('text-2xl font-bold text-slate-600 dark:text-white')}>{ellipsis(context?.user?.meta?.name, 17)}</Text>
             </View>
           </View>
           <View>

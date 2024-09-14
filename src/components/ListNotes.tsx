@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { AppContext } from '../providers/AppProvider';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { ellipsis, formatDate } from '../utils';
 
 const ListNotes = () => {
 
@@ -37,9 +38,9 @@ const ListNotes = () => {
                 nav.navigate('Note', { note: item })
               }}
             >
-              <Text style={tw('text-lg text-slate-900 dark:text-white font-bold')}>{item.title}</Text>
-              <Text style={tw('text-slate-900 dark:text-white')} >{item.body}</Text>
-              <Text style={tw('text-xs mt-4 text-slate-900 dark:text-white')}>{moment(new Date(item.date)).fromNow()}</Text>
+              <Text style={tw('text-lg text-slate-900 dark:text-white font-bold')}>{ellipsis(item.title, 25)}</Text>
+              <Text style={tw('text-slate-900 dark:text-white')} >{ellipsis(item.body, 100)}</Text>
+              <Text style={tw('text-xs mt-4 text-slate-900 dark:text-white')}>{formatDate(moment(new Date(item.date)))}</Text>
             </Pressable>
           )
         )

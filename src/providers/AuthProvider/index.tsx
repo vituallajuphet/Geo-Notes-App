@@ -39,6 +39,7 @@ export const AuthProvider = ({ children }: any) => {
   useEffect(() => {
     const subscriber = firestore()
       .collection(`Users/${user?.auth?.uid}/notes`)
+      .orderBy('date', 'desc')
       .onSnapshot(documentSnapshot => {
         const data = documentSnapshot.docs.map(doc => {
           return {
