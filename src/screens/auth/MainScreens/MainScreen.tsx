@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { View, Text, Button, Pressable } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AuthContext } from '../../../providers/AuthProvider';
-import {NoteListScreen, HomeScreen, LogoutScreen, NoteScreen, NoteMapScreen} from './';
+import { NoteListScreen, HomeScreen, LogoutScreen, NoteScreen, NoteMapScreen } from './';
 
 import auth from '@react-native-firebase/auth';
 import { useTailwind } from 'tailwind-rn';
@@ -33,11 +33,11 @@ const MainScreen: React.FC = ({ navigation }) => {
             {/* <Pressable onPress={handleLogout}>
             <Icon name="bars" size={25} />
             </Pressable> */}
-            <PopupMenu  onLogout={handleLogout}/>
+            <PopupMenu onLogout={handleLogout} />
           </View>
         </View>
         <View style={tw('mt-8')}>
-        <Text style={tw('text-xl font-bold')}>Note Lists</Text>
+          <Text style={tw('text-xl font-bold')}>Note Lists</Text>
         </View>
       </View>
       <Tab.Navigator
@@ -45,15 +45,15 @@ const MainScreen: React.FC = ({ navigation }) => {
           headerShown: false,
         }}
       >
-        <Tab.Screen name="Home" component={NoteListScreen}  options={{
+        <Tab.Screen name="Home" component={NoteListScreen} options={{
           tabBarLabel: 'List',
           tabBarStyle: tw('bg-white dark:bg-slate-800 p-1'),
           tabBarLabelStyle: tw('text-slate-900 dark:text-white text-sm'),
           tabBarIcon: ({ color, size }) => (
             <Icon name="list" color={color} size={size} />
           ),
-        }}/>
-        <Tab.Screen name="NoteList" component={NoteMapScreen} 
+        }} />
+        <Tab.Screen name="NoteList" component={NoteMapScreen}
           options={{
             tabBarLabel: 'Map',
             tabBarStyle: tw('bg-white dark:bg-slate-800 p-1'),
@@ -65,12 +65,12 @@ const MainScreen: React.FC = ({ navigation }) => {
         />
       </Tab.Navigator>
       <View style={tw('absolute bottom-[4rem] right-2')}>
-          <Button title='Add new'
-            onPress={() => {
-              navigation.navigate('Note')
-            }}
-          />
-        </View>
+        <Button title='Add new'
+          onPress={() => {
+            navigation.navigate('Note')
+          }}
+        />
+      </View>
     </View>
   );
 };

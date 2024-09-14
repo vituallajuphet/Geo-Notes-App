@@ -1,9 +1,9 @@
-import {View, Text} from 'react-native';
-import React, {useContext} from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {LoginScreen, SignUpScreen} from '../screens/guest';
+import { View, Text } from 'react-native';
+import React, { useContext } from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { LoginScreen, SignUpScreen } from '../screens/guest';
 import MainScreen from '../screens/auth/MainScreens/MainScreen';
-import {AuthContext} from '../providers/AuthProvider';
+import { AuthContext } from '../providers/AuthProvider';
 import { NoteScreen } from '../screens/auth/MainScreens';
 
 const Stack = createNativeStackNavigator();
@@ -13,10 +13,10 @@ const RootNavigator = () => {
 
   const initScreens = () => {
     if (authContext?.user) {
-      return       <>
-      <Stack.Screen name="Main" component={MainScreen} />
-      <Stack.Screen name="Note" component={NoteScreen} />
-     </>
+      return <>
+        <Stack.Screen name="Main" component={MainScreen} />
+        <Stack.Screen name="Note" component={NoteScreen} />
+      </>
 
     } else {
       return (

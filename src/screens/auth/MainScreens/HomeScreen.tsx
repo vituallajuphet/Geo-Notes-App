@@ -1,8 +1,8 @@
-import {View, Text, StyleSheet} from 'react-native';
-import React, {useContext} from 'react';
-import {useTailwind} from 'tailwind-rn';
-import {AuthContext} from '../../../providers/AuthProvider';
-import MapLibreGL, {  Camera, PointAnnotation } from '@maplibre/maplibre-react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import React, { useContext } from 'react';
+import { useTailwind } from 'tailwind-rn';
+import { AuthContext } from '../../../providers/AuthProvider';
+import MapLibreGL, { Camera, PointAnnotation } from '@maplibre/maplibre-react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Button from '../../../components/Button';
 import ListNotes from '../../../components/ListNotes';
@@ -18,7 +18,7 @@ const HomeScreen = () => {
   const context = useContext(AuthContext);
 
   return (
-       null
+    null
   );
 };
 

@@ -10,7 +10,7 @@ const NoteListScreen = () => {
 
   return (
     <View style={tw('flex-1 bg-white dark:bg-slate-800  py-0')}>
-        <ListNotes />
+      <ListNotes />
     </View>
   )
 }

@@ -3,7 +3,7 @@ import React, { createContext, useState } from 'react';
 export const AppContext = createContext<any>(null);
 
 const initialState = {
-    loading: false,
+  loading: false,
 }
 
 export const AppProvider = ({ children }: any) => {
