@@ -9,7 +9,7 @@ const NoteListScreen = () => {
   const tw = useTailwind();
 
   return (
-    <View style={tw('flex-1 bg-white dark:bg-slate-800  py-0')}>
+    <View style={tw('flex-1 bg-slate-200 dark:bg-slate-700  py-0')}>
       <ListNotes />
     </View>
   )

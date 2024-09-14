@@ -5,6 +5,8 @@ import { useTailwind } from 'tailwind-rn';
 import Geolocation from '@react-native-community/geolocation';
 import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from '../../../providers/AuthProvider';
+import { useNavigation } from '@react-navigation/native';
+import { AppContext } from '../../../providers/AppProvider';
 
 MapLibreGL.setAccessToken(null);
 const apiKey = 'e229690a-f2a0-4915-b43d-b79e90b62832';
@@ -15,43 +17,32 @@ const NoteMapScreen = () => {
   const [currentLocation, setLocation] = React.useState<any>(null);
 
   const context = useContext(AuthContext);
-  const [notelists, setNotelists] = useState<any[]>([]);
+  const { state } = useContext(AppContext)
+  const notelists = state?.notes;
+  const nav = useNavigation();
 
-  const getAllNotes = async () => {
-    try {
-      const uid = context?.user?.auth?.uid
-      const notesCollectionRef = firestore().collection(`Users/${uid}/notes`);
-      const snapshot = await notesCollectionRef.get();
-
-      const notes = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      console.log("notes", notes)
-
-      setNotelists(notes);
-    } catch (e) {
-      console.error("Error fetching notes: ", e);
-
-    }
-  };
 
   useEffect(() => {
-    getAllNotes()
+    Geolocation.getCurrentPosition(info => {
+      setLocation(info);
+    }, () => {
+      setLocation(null);
+    });
   }, [])
 
-
-  Geolocation.getCurrentPosition(info => {
-    setLocation(info);
-  }, () => {
-    setLocation(null);
-  });
 
   const getPins = useCallback(() => {
     return notelists.map(note => {
       return (
-        <PointAnnotation key={note.id} id={note.id} coordinate={[note.location.coords.longitude, note.location.coords.latitude]} title={note.title} onSelected={() => console.log('onSelected')} />
+        <PointAnnotation
+          key={note.id}
+          id={note.id}
+          coordinate={[note.location.coords.longitude, note.location.coords.latitude]}
+          title={note.title}
+          onSelected={() => {
+            nav.navigate('Note', { note: note })
+          }}
+        />
       )
     })
 
@@ -60,14 +51,16 @@ const NoteMapScreen = () => {
 
 
   return (
-    <View style={tw('flex-1 bg-white dark:bg-slate-900')}>
+    <View style={tw('flex-1 bg-slate-200 dark:bg-slate-700 p-2')}>
       {
         currentLocation ? (
           <MapLibreGL.MapView style={styles.map} logoEnabled={false} styleURL={styleUrl} onPress={(e) => console.log(e)}
           >
-            <Camera zoomLevel={10} centerCoordinate={
-              [currentLocation.coords.longitude, currentLocation.coords.latitude]
-            } />
+            <Camera
+              zoomLevel={10}
+              centerCoordinate={
+                [currentLocation.coords.longitude, currentLocation.coords.latitude]
+              } />
             {getPins()}
 
           </MapLibreGL.MapView>

@@ -105,7 +105,7 @@ const SignUpScreen = props => {
     >
       <View style={tw('flex-1 ')}>
         {!isKeyboardVisible ? (
-          <View style={tw('h-[25%] items-center justify-center bg-slate-700')}>
+          <View style={tw('h-[25%] items-center justify-center bg-slate-200 dark:bg-slate-700')}>
             <View style={[styles.gap4, tw('flex-row items-center')]}>
               <Icon name="map" size={50} color='#54bdfa' />
             </View>
@@ -116,15 +116,16 @@ const SignUpScreen = props => {
             style={tw('text-2xl text-slate-700 dark:text-slate-100 font-bold')}>
             Create Account
           </Text>
-          <Text style={tw('text-sm text-slate-300')}>
-            Welcome to Geo Note Sign in to Start
+          <Text style={tw('text-sm text-slate-700 dark:text-slate-400')}>
+            Welcome to Geo Note start writing your note
           </Text>
           <View style={[styles.gap4, tw('mt-8')]}>
             <View>
-              <Text style={tw('font-bold text-sm mb-1')}>Full Name</Text>
+              <Text style={tw('font-bold text-sm mb-1 text-slate-700 dark:text-slate-200')}>Full Name</Text>
               <TextInput
+                placeholderTextColor={'#777'}
                 placeholder="Enter your email address"
-                style={tw('w-full border border-gray-300 rounded-md p-2')}
+                style={tw('w-full border border-gray-300 rounded-md p-2 text-slate-700 dark:text-slate-200')}
                 value={fullname}
                 onChangeText={text => {
                   handleChangeName(text);
@@ -137,10 +138,11 @@ const SignUpScreen = props => {
               )}
             </View>
             <View>
-              <Text style={tw('font-bold text-sm mb-1')}>Email Address</Text>
+              <Text style={tw('font-bold text-sm mb-1 text-slate-700 dark:text-slate-200')}>Email Address</Text>
               <TextInput
+                placeholderTextColor={'#777'}
                 placeholder="Enter your email address"
-                style={tw('w-full border border-gray-300 rounded-md p-2')}
+                style={tw('w-full border border-gray-300 rounded-md p-2 text-slate-700 dark:text-slate-200')}
                 value={email}
                 onChangeText={text => {
                   handleChangeEmail(text);
@@ -153,10 +155,11 @@ const SignUpScreen = props => {
               )}
             </View>
             <View>
-              <Text style={tw('font-bold text-sm mb-1')}>Password</Text>
+              <Text style={tw('font-bold text-sm mb-1 text-slate-700 dark:text-slate-200')}>Password</Text>
               <TextInput
+                placeholderTextColor={'#777'}
                 placeholder="Enter your password"
-                style={tw('w-full border border-gray-300 rounded-md p-2')}
+                style={tw('w-full border border-gray-300 rounded-md p-2 text-slate-700 dark:text-slate-200')}
                 value={password}
                 onChangeText={text => {
                   handleChangePassword(text);

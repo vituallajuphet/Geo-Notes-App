@@ -1,6 +1,6 @@
 // screens/MainScreen.tsx
 import React, { useContext } from 'react';
-import { View, Text, Button, Pressable } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AuthContext } from '../../../providers/AuthProvider';
 import { NoteListScreen, HomeScreen, LogoutScreen, NoteScreen, NoteMapScreen } from './';
@@ -9,6 +9,7 @@ import auth from '@react-native-firebase/auth';
 import { useTailwind } from 'tailwind-rn';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PopupMenu from '../../../components/PopupMenu';
+import FabButton from '../../../components/FabButton';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,11 +24,21 @@ const MainScreen: React.FC = ({ navigation }) => {
 
   return (
     <View style={tw('flex-1')}>
-      <View style={tw('bg-white dark:bg-slate-800 p-6 px-4')}>
-        <View style={tw('flex-row w-full justify-between items-center')}>
-          <View>
-            <Text style={tw('text-2xl font-bold')}>Hello, </Text>
-            <Text style={tw('text-2xl font-bold')}>{context?.user?.meta?.name}</Text>
+      <View style={tw('bg-white dark:bg-slate-800 ')}>
+        <View style={tw('flex-row w-full justify-between items-center p-6 px-4')}>
+          <View style={[
+            tw('flex-row items-center justify-center'),
+            { columnGap: 10 }
+          ]}>
+            <View style={[
+              tw('h-12 w-12 bg-slate-200 dark:bg-slate-600 rounded-full items-center justify-center'),
+            ]}>
+              <Icon name="user" size={25} style={tw('text-slate-600 dark:text-white')} />
+            </View>
+            <View>
+              <Text style={tw('text-2xl font-bold text-slate-600 dark:text-white')}>Hello, </Text>
+              <Text style={tw('text-2xl font-bold text-slate-600 dark:text-white')}>{context?.user?.meta?.name}</Text>
+            </View>
           </View>
           <View>
             {/* <Pressable onPress={handleLogout}>
@@ -36,8 +47,8 @@ const MainScreen: React.FC = ({ navigation }) => {
             <PopupMenu onLogout={handleLogout} />
           </View>
         </View>
-        <View style={tw('mt-8')}>
-          <Text style={tw('text-xl font-bold')}>Note Lists</Text>
+        <View style={tw('mt-8 bg-slate-200 dark:bg-slate-700 p-4 rounded-t-full px-8')}>
+          <Text style={tw('text-xl font-bold text-slate-700 dark:text-slate-200')}>Note Lists</Text>
         </View>
       </View>
       <Tab.Navigator
@@ -66,7 +77,7 @@ const MainScreen: React.FC = ({ navigation }) => {
         />
       </Tab.Navigator>
       <View style={tw('absolute bottom-[4rem] right-2')}>
-        <Button title='Add new'
+        <FabButton
           onPress={() => {
             navigation.navigate('Note')
           }}
