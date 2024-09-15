@@ -47,9 +47,7 @@ export const AuthProvider = ({ children }: any) => {
             ...doc.data()
           }
         });
-        if (data.length) {
-          send(prev => ({ ...prev, notes: data }));
-        }
+        send(prev => ({ ...prev, notes: data.length > 0 ? data : [] }));
       });
 
     return () => subscriber();

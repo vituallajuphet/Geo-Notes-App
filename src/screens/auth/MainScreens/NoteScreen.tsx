@@ -15,9 +15,12 @@ import Toast from 'react-native-toast-message';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import LocationPicker from '../../../components/LocationPicker';
 
 const NoteScreen = (props: any) => {
   const [title, setTitle] = React.useState('');
+  const [openMap, setOpenMap] = React.useState(false);
+  const [selectedLocation, setSelectedLocation] = React.useState<any>(null);
   const [openDate, setOpenDate] = React.useState(false);
   const [date, setDate] = React.useState(new Date());
   const [selectedImage, setSelectedImage] = React.useState<any>(null);
@@ -38,22 +41,12 @@ const NoteScreen = (props: any) => {
 
   useEffect(() => {
 
-    const getImageUrl = async (path: string) => {
-      const url = await storage().ref(path).getDownloadURL();
-      return url
-    }
-
     if (params?.note) {
       const note = params?.note;
       setTitle(note?.title);
       setBody(note?.body);
       setDate(new Date(note?.date));
-
-      if (note?.imagepath) {
-        getImageUrl(note?.imagepath).then((url) => {
-          setSelectedImage({ uri: url });
-        });
-      }
+      setSelectedImage({ uri: note?.imagepath });
     }
 
   }, [params])
@@ -91,7 +84,12 @@ const NoteScreen = (props: any) => {
         notesCollectionRef.add({
           title,
           body,
-          location,
+          location: selectedLocation ? {
+            coords: {
+              latitude: selectedLocation?.latitude,
+              longitude: selectedLocation?.longitude
+            }
+          } : location,
           date: date.toISOString(),
           imagepath: path
         }).then(() => {
@@ -125,7 +123,12 @@ const NoteScreen = (props: any) => {
         notesCollectionRef.doc(params.note.id).update({
           title,
           body,
-          location,
+          location: selectedLocation ? {
+            coords: {
+              latitude: selectedLocation?.latitude,
+              longitude: selectedLocation?.longitude
+            }
+          } : location,
           date: date.toISOString(),
           imagepath: path
         }).then(() => {
@@ -157,7 +160,10 @@ const NoteScreen = (props: any) => {
       const uid = uuid.v4();
       const fullPath = `images/${uid}.${ext}`;
       await storage().ref(fullPath).putFile(uploadUri);
-      return fullPath;
+
+      const url = await storage().ref(fullPath).getDownloadURL();
+
+      return url;
     } catch (error) {
       console.log("error ", error);
       return null;
@@ -179,7 +185,7 @@ const NoteScreen = (props: any) => {
         });
         setTimeout(() => {
           props.navigation.goBack();
-        }, 1000);
+        }, 500);
       }).catch((error) => { console.log("error ", error) });
     } catch (error) {
       Toast.show({
@@ -202,6 +208,13 @@ const NoteScreen = (props: any) => {
           <Text style={tw('text-2xl font-bold')}>{params ? "Update Note" : "Add New"}</Text>
           <Text style={tw('text-sm text-gray-500 mt-2')}>Fill up the required form</Text>
           <View style={tw('mt-6')}>
+            <Pressable style={tw('')} onPress={() => {
+              setOpenMap(true);
+            }}>
+              <Text style={tw('text-sm text-slate-700 dark:text-blue-400 font-semibold')}>Set Custom Location</Text>
+            </Pressable>
+          </View>
+          <View style={tw('mt-4')}>
             <Text style={tw('font-bold text-sm mb-1')}>Date</Text>
             <Pressable style={tw('w-full border border-gray-300 rounded-md p-3')} onPress={() => {
               setOpenDate(true);
@@ -254,6 +267,16 @@ const NoteScreen = (props: any) => {
         <Toast
           position='bottom'
           bottomOffset={20}
+        />
+        <LocationPicker
+          open={openMap}
+          onClose={() => {
+            setOpenMap(false);
+          }}
+          onSelect={(location) => {
+            setSelectedLocation(location);
+            setOpenMap(false);
+          }}
         />
         <DatePicker
           modal
