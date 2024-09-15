@@ -215,7 +215,7 @@ const NoteScreen = (props: any) => {
   return (
     <>
       <KeyboardAwareScrollView
-        contentContainerStyle={tw('bg-slate-200 dark:bg-slate-800')}
+        style={tw('bg-slate-200 dark:bg-slate-800 flex-1')}
       >
         <View style={tw(' p-6 px-4 flex-1')}>
           <Text style={tw('text-2xl font-bold')}>{params ? "Update Note" : "Add New"}</Text>
