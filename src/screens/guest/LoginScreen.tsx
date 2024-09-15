@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useTailwind } from 'tailwind-rn';
 import Button from '../../components/Button';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -15,10 +15,12 @@ import _ from 'lodash';
 import { useNavigation } from '@react-navigation/native';
 import { useKeyboard } from '../../hooks/useKeyboard';
 import auth from '@react-native-firebase/auth';
+import { withLoading } from '../../HOC/withLoading';
+import { AppContext } from '../../providers/AppProvider';
 
 const LoginScreen = () => {
   const tw = useTailwind();
-
+  const { send } = useContext(AppContext);
   const nav = useNavigation();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -51,16 +53,17 @@ const LoginScreen = () => {
     if (!isValidated) {
       return;
     }
+    send(prev => ({ ...prev, loading: true }));
     auth()
       .signInWithEmailAndPassword(
         email,
         password,
       )
       .then(() => {
-        console.log('User account created & signed in!');
+        send(prev => ({ ...prev, loading: false }));
       })
       .catch(error => {
-
+        send(prev => ({ ...prev, loading: false }));
         setError({ ...error, password: "Invalid Email or Password" });
       });
   };
@@ -163,4 +166,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default withLoading(LoginScreen);  
