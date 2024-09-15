@@ -31,6 +31,9 @@ const NoteMapScreen = () => {
 
   const getPins = useCallback(() => {
     return notelists.map(note => {
+      if (!note?.location?.coords) {
+        return null
+      }
       return (
         <PointAnnotation
           key={note.id}

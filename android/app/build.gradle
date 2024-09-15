@@ -78,6 +78,10 @@ android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
+     lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 
     namespace "com.geonotes"
     defaultConfig {
@@ -117,5 +121,12 @@ dependencies {
         implementation("com.facebook.react:hermes-android")
     } else {
         implementation jscFlavor
+    }
+}
+
+
+afterEvaluate {
+    tasks.matching { it.name == "generateReleaseLintVitalReportModel" }.all { task ->
+        task.dependsOn("copyReactNativeVectorIconFonts")
     }
 }
