@@ -16,6 +16,7 @@ import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import LocationPicker from '../../../components/LocationPicker';
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 const NoteScreen = (props: any) => {
   const [title, setTitle] = React.useState('');
@@ -33,11 +34,23 @@ const NoteScreen = (props: any) => {
 
   const { send } = useContext(AppContext);
 
+  const requestLocationPermission = async () => {
+    const permissionType = Platform.OS === 'android' ? PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION : PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
+
+    const result = await request(permissionType);
+
+    if (result === RESULTS.GRANTED) {
+      Geolocation.getCurrentPosition(info => {
+        console.log("current localtion", info)
+        setLocation(info);
+      });
+    }
+  };
+
   useEffect(() => {
-    Geolocation.getCurrentPosition(info => {
-      setLocation(info);
-    });
+    requestLocationPermission();
   }, [])
+
 
   useEffect(() => {
 
