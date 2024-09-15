@@ -23,9 +23,9 @@ const SignUpScreen = () => {
   const tw = useTailwind();
   const nav = useNavigation();
 
-  const [email, setEmail] = React.useState('ybanezmichelle1114@gmail.com');
-  const [fullname, setFullname] = React.useState('inday pahak');
-  const [password, setPassword] = React.useState('pass1234');
+  const [email, setEmail] = React.useState('');
+  const [fullname, setFullname] = React.useState('');
+  const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState({
     email: '',
     password: '',
